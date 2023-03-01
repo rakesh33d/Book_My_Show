@@ -1,6 +1,8 @@
 package spring_projects.Book_My_Show.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,13 @@ public class ShowController {
     @Autowired
     ShowService showService;
     @PostMapping("/add")
-    public String addShow(@RequestBody ShowEntryDto showEntryDto){
+    public ResponseEntity<String> addShow(@RequestBody ShowEntryDto showEntryDto){
 
-        return showService.addShow(showEntryDto);
+try {
+    String response = showService.addShow(showEntryDto);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
+}catch (Exception e){
+    return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+}
     }
 }
