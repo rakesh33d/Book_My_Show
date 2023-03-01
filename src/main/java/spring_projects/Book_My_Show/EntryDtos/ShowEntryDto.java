@@ -8,8 +8,15 @@ import java.time.LocalTime;
 
 @Data
 public class ShowEntryDto {
-    LocalDate Date;
-    LocalTime Time;
+    private LocalDate Date;
+    private LocalTime Time;
     private ShowType showType;
+    private int movieId;
+    private int theaterId;
+
+    private int premiumSeatPrice;
+    private int classicSeatPrice;
+
+
 
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring_projects.Book_My_Show.EntryDtos.TheaterEntryDto;
@@ -15,7 +17,8 @@ public class TheaterController {
     @Autowired
     TheaterService theaterService;
 
-    public ResponseEntity<String> addTheater(TheaterEntryDto theaterEntryDto) throws Exception {
+@PostMapping("/add")
+    public ResponseEntity<String> addTheater(@RequestBody TheaterEntryDto theaterEntryDto) throws Exception {
 
         try {
             String response = theaterService.addTheater(theaterEntryDto);
