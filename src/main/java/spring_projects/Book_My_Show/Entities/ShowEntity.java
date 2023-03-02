@@ -25,8 +25,8 @@ public class ShowEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate Date;
-    private LocalTime Time;
+    private LocalDate showDate;
+    private LocalTime showTime;
     @Enumerated(value = EnumType.STRING)
     private ShowType showType;
     @CreationTimestamp
@@ -45,7 +45,7 @@ public class ShowEntity {
 
     //it is parent for show seat entity
     @OneToMany(mappedBy = "showEntity",cascade = CascadeType.ALL)
-    private List<ShowSeatEntity>listOfShowSeat = new ArrayList<>();
+    private List<ShowSeatEntity>listOfShowSeats = new ArrayList<>();
 
     // it is child for movie entity
     @ManyToOne

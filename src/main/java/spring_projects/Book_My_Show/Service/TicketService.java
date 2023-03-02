@@ -32,9 +32,6 @@ public class TicketService {
         //3.save parent
         TicketEntity ticketEntity = TicketConverter.convertDtoToEntity(ticketEntryDto);
 
-        int showId = ticketEntryDto.getShowId();
-        ShowEntity showEntity = showRepository.findById(showId).get();
-
         //done some validations
         //like seat is available or not
         boolean isValidRequest = checkValidityOfRequestedSeat(ticketEntryDto);
@@ -44,13 +41,16 @@ public class TicketService {
         }
 
         //calculate total amount
+        int showId = ticketEntryDto.getShowId();
+        ShowEntity showEntity = showRepository.findById(showId).get();
+
         List<String>requestedSeats = ticketEntryDto.getRequestedSeats();
 
-        List<ShowSeatEntity>listOfSeats = showEntity.getListOfShowSeat();
+        List<ShowSeatEntity>seatEntityList = showEntity.getListOfShowSeats();
 
         int totalAmount=0;
-        for(ShowSeatEntity showSeatEntity: listOfSeats){
-            if(requestedSeats.contains(showSeatEntity)){
+        for(ShowSeatEntity showSeatEntity: seatEntityList){
+            if(requestedSeats.contains(showSeatEntity.getSeatNo())){
                 totalAmount = totalAmount+showSeatEntity.getPrice();
                 showSeatEntity.setBooked(true);
                 showSeatEntity.setBookedAt(new Date());
@@ -61,8 +61,8 @@ public class TicketService {
 
         //set other attributes
         ticketEntity.setMovieName(showEntity.getMovieEntity().getName());
-        ticketEntity.setShowDate(showEntity.getDate());
-        ticketEntity.setShowTime(showEntity.getTime());
+        ticketEntity.setShowDate(showEntity.getShowDate());
+        ticketEntity.setShowTime(showEntity.getShowTime());
         ticketEntity.setTheaterName(showEntity.getTheaterEntity().getName());
 
 
@@ -99,9 +99,12 @@ public class TicketService {
     private boolean checkValidityOfRequestedSeat(TicketEntryDto ticketEntryDto){
 
         int showId = ticketEntryDto.getShowId();
+
         List<String>requestedSeats = ticketEntryDto.getRequestedSeats();
+
         ShowEntity showEntity = showRepository.findById(showId).get();
-        List<ShowSeatEntity>listOfSeats = showEntity.getListOfShowSeat();
+
+        List<ShowSeatEntity>listOfSeats = showEntity.getListOfShowSeats();
 
         //iterate over seats for this particular show
         for(ShowSeatEntity seat: listOfSeats){

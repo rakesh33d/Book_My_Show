@@ -6,6 +6,7 @@ import spring_projects.Book_My_Show.EntryDtos.TicketEntryDto;
 public class TicketConverter {
 
     public static TicketEntity convertDtoToEntity(TicketEntryDto ticketEntryDto){
-        return  TicketEntity.builder().build();
+        TicketEntity ticketEntity = new TicketEntity();
+        return ticketEntity;
     }
 }

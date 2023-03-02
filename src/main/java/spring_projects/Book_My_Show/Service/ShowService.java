@@ -37,24 +37,21 @@ public class ShowService {
         showEntity.setTheaterEntity(theaterEntity);
         showEntity.setMovieEntity(movieEntity);
 
-        List<ShowSeatEntity>showSeatEntityList = ceateShowSeats(showEntryDto,showEntity);
+        List<ShowSeatEntity>seatEntityList = ceateShowSeats(showEntryDto,showEntity);
 
-        showEntity.setListOfShowSeat(showSeatEntityList);
+        showEntity.setListOfShowSeats(seatEntityList);
         showEntity = showRepository.save(showEntity);
 
         //we also need to update parent attributes
         //get and set attributes and save parent
-        List<ShowEntity>showEntityList = movieEntity.getShowEntityList();
-        showEntityList.add(showEntity);
-        movieEntity.setShowEntityList(showEntityList);
+        movieEntity.getShowEntityList().add(showEntity);
+
 
         movieRepository.save(movieEntity);
 
         //save other parent also
-        List<ShowEntity>showEntityList1 = theaterEntity.getShowEntityList();
+        theaterEntity.getShowEntityList().add(showEntity);
 
-        showEntityList1.add(showEntity);
-        theaterEntity.setShowEntityList(showEntityList1);
 
         theaterRepository.save(theaterEntity);
 
@@ -63,15 +60,15 @@ public class ShowService {
     private List<ShowSeatEntity> ceateShowSeats(ShowEntryDto showEntryDto,ShowEntity showEntity){
         //now goal is to create the show seat entity
         //we need to set its attributes
-        List<TheaterSeatEntity>theaterSeatEntityList = showEntity.getTheaterEntity().getTheaterSeatEntityList();
-        List<ShowSeatEntity>showSeatEntityList = new ArrayList<>();
-//        for(int count = 1; count<= theaterSeatEntityList.size();count++){
-//            ShowSeatEntity showSeatEntity = new ShowSeatEntity();
-//            showSeatEntity.setPrice(showEntryDto.getClassicSeatPrice());
-//        }
+        TheaterEntity theaterEntity = showEntity.getTheaterEntity();
+
+        List<TheaterSeatEntity>theaterSeatEntityList = theaterEntity.getTheaterSeatEntityList();
+        List<ShowSeatEntity>seatEntityList = new ArrayList<>();
+
         for(TheaterSeatEntity theaterSeatEntity: theaterSeatEntityList){
             //create show seat entity for every theater seat
             ShowSeatEntity showSeatEntity = new ShowSeatEntity();
+
             showSeatEntity.setSeatNo(theaterSeatEntity.getSeatNo());
             showSeatEntity.setSeatType(theaterSeatEntity.getSeatType());
             if(theaterSeatEntity.getSeatType().equals(SeatType.CLASSIC)){
@@ -85,12 +82,12 @@ public class ShowService {
             showSeatEntity.setShowEntity(showEntity);
 
             //add it to list
-            showSeatEntityList.add(showSeatEntity);
+            seatEntityList.add(showSeatEntity);
 
 
         }
 
-        return showSeatEntityList;
+        return seatEntityList;
 
     }
 
