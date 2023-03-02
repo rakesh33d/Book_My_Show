@@ -40,6 +40,7 @@ public class ShowService {
         List<ShowSeatEntity>showSeatEntityList = ceateShowSeats(showEntryDto,showEntity);
 
         showEntity.setListOfShowSeat(showSeatEntityList);
+        showEntity = showRepository.save(showEntity);
 
         //we also need to update parent attributes
         //get and set attributes and save parent

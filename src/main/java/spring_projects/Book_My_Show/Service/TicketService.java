@@ -76,6 +76,8 @@ public class TicketService {
         ticketEntity.setUserEntity(userEntity);
         ticketEntity.setShowEntity(showEntity);
 
+        ticketEntity = ticketRepository.save(ticketEntity);
+
         //save the parents
         List<TicketEntity>bookedTickets = userEntity.getBookedTickets();
         bookedTickets.add(ticketEntity);
